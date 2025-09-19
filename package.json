@@ -1,0 +1,21 @@
+{
+  "name": "blockenfy-wallet-api-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "fmt": "biome format --write .",
+    "lint": "biome lint --write ."
+  },
+  "author": "Alejandro Aranda",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "@alejyoo000/rules": "^1.0.2",
+    "@biomejs/biome": "^2.2.4",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "nodemon": "^3.1.10"
+  }
+}
