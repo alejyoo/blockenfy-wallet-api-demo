@@ -2,6 +2,7 @@ import { asyncHandler } from '../middleware/errorHandler.js'
 import {
   createUser as createUserService,
   getUserBalance,
+  listUsers as listUsersService,
   rechargeBalance
 } from '../services/walletService.js'
 import {
@@ -40,5 +41,15 @@ export const createUser = asyncHandler(async (_req, res) => {
     success: true,
     message: 'User created successfully',
     data: userData
+  })
+})
+
+export const listUsers = asyncHandler(async (_req, res) => {
+  const users = await listUsersService()
+
+  res.json({
+    succes: true,
+    message: `list of ${users.length} users`,
+    data: users
   })
 })

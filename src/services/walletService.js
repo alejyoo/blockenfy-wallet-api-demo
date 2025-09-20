@@ -55,3 +55,18 @@ export const createUser = async () => {
     createdAt: user.createdAt
   }
 }
+
+export const listUsers = async () => {
+  const users = await prisma.user.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+
+  return users.map(user => ({
+    userId: user.id,
+    balance: parseFloat(user.balance),
+    currency: user.currency,
+    createdAt: user.createdAt
+  }))
+}
