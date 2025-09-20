@@ -2,6 +2,7 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import config from './config.js'
+import { errorHandler, notFound } from './middleware/errorHandler.js'
 
 const app = express()
 
@@ -12,11 +13,14 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/health', (_req, res) => {
   res.json({
-    sucess: true,
+    success: true,
     timestamp: new Date().toISOString(),
     env: config.server.nodeEnv
   })
 })
+
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(config.server.port, () => {
   console.log(`Server open on port ${config.server.port}`)
