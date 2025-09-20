@@ -1,10 +1,6 @@
 import { Router } from 'express'
-import {
-  createUser,
-  getBalance,
-  listUsers,
-  recharge
-} from '../controllers/walletController.js'
+import { getBalance, recharge } from '../controllers/balanceController.js'
+import { createUser, listUsers } from '../controllers/userController.js'
 
 const router = Router()
 
