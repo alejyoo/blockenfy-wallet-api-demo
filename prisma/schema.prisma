@@ -15,5 +15,18 @@ model User {
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 
+  recharged Recharge[]
+
   @@map("users")
+}
+
+model Recharge {
+  id        String   @id @default(cuid())
+  amount    Decimal  @db.Decimal(10, 2)
+  userId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("recharges")
 }

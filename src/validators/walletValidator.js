@@ -14,3 +14,16 @@ export const validateUserId = userId => {
 
   return userId.trim()
 }
+
+export const validateAmount = amount => {
+  if (!amount && amount !== 0) {
+    throw new AppError('Amount is required', 400)
+  }
+  const numAmount = Number(amount)
+
+  if (Number.isNaN(numAmount)) {
+    throw new AppError('Tiene que ser un numero', 400)
+  }
+
+  return numAmount
+}

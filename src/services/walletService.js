@@ -13,3 +13,32 @@ export const getUserBalance = async userId => {
     currency: user.currency
   }
 }
+
+export const rechargeBalance = async (userId, amount) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+
+  if (!user) {
+    throw new AppError('User not found', 404)
+  }
+
+  const updateUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      balance: {
+        increment: amount
+      }
+    }
+  })
+
+  const recharge = await prisma.recharge.create({
+    data: { userId: userId, amount: amount }
+  })
+
+  return {
+    userId: updateUser.id,
+    amountRecharge: parseFloat(recharge.amount),
+    newBalance: parseFloat(updateUser.balance),
+    transactionId: recharge.id,
+    timestamp: recharge.createdAt
+  }
+}
