@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  balance   Decimal  @default(0) @db.Decimal(10, 2)
+  currency  String   @default("USD")
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  @@map("users")
+}
