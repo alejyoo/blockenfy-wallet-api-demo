@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
+import morgan from 'morgan'
 import config from './config.js'
 import { connectDatabase } from './database/connection.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -8,6 +9,7 @@ import walletRoutes from './routes/walletRoutes.js'
 
 const app = express()
 
+app.use(morgan('dev'))
 app.use(helmet())
 app.use(cors())
 app.use(express.json({ limit: '10mb' }))
@@ -30,10 +32,13 @@ const startServer = async () => {
   try {
     await connectDatabase()
     app.listen(config.server.port, () => {
-      console.log(`Server open on port ${config.server.port}`)
+      console.log(`🚀 Server open on port ${config.server.port}`)
+      console.log(
+        `🔨 API available on the route ${config.api.prefix}/${config.api.version}/wallet`
+      )
     })
   } catch (error) {
-    console.error('Failed to start server', error)
+    console.error('❌ Failed to start server', error)
     process.exit(1)
   }
 }

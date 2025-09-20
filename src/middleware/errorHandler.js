@@ -13,12 +13,15 @@ export const errorHandler = (err, _req, res, _next) => {
 
   res.status(err.statusCode).json({
     success: false,
-    message: err.message
+    message: `❌ ${err.message}`
   })
 }
 
 export const notFound = (req, _res, next) => {
-  const error = new AppError(`${req.originalUrl} not found`, 404)
+  const error = new AppError(
+    `${req.originalUrl} route unavailable or nonexistent`,
+    404
+  )
   next(error)
 }
 
