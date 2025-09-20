@@ -42,3 +42,16 @@ export const rechargeBalance = async (userId, amount) => {
     timestamp: recharge.createdAt
   }
 }
+
+export const createUser = async () => {
+  const user = await prisma.user.create({
+    data: { balance: 0, currency: 'USD' }
+  })
+
+  return {
+    userId: user.id,
+    balance: parseFloat(user.balance),
+    currency: user.currency,
+    createdAt: user.createdAt
+  }
+}
