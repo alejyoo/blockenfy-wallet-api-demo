@@ -7,7 +7,13 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "fmt": "biome format --write .",
-    "lint": "biome lint --write ."
+    "lint": "biome lint --write .",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:seed": "node scripts/createUsers.js",
+    "db:clear": "node scripts/clearDatabase.js",
+    "db:reset": "pnpm run db:clear && pnpm run db:seed"
   },
   "author": "Alejandro Aranda",
   "license": "MIT",
