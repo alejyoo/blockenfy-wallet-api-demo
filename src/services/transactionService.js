@@ -1,6 +1,10 @@
 import { prisma } from '#database/connection.js'
+import { findUserOrFail } from './helpers'
 
 export const transferMoney = async (fromUserId, toUserId, amount) => {
+  findUserOrFail(fromUserId)
+  findUserOrFail(toUserId)
+
   return await prisma.$transaction(async tx => {
     const updatedSender = await tx.user.update({
       where: { id: fromUserId },

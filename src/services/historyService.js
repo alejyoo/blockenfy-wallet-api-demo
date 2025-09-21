@@ -1,9 +1,8 @@
-import { DESCRIPTION_TYPES, ERR_MESSAGE, TYPES } from '#constants/index.js'
+import { DESCRIPTION_TYPES, TYPES } from '#constants/index.js'
 import { prisma } from '#database/connection.js'
 
 export const getUserHistory = async userId => {
-  const user = await prisma.user.findUnique({ where: { id: userId } })
-  if (!user) throw new AppError(ERR_MESSAGE.USER_NOT_FOUND, 404)
+  const user = findUserOrFail(userId)
 
   const [recharges, sentTransactions, receivedTransactions] = await Promise.all(
     [
