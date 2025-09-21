@@ -1,5 +1,5 @@
 import { prisma } from '#database/connection.js'
-import { findUserOrFail } from './helpers'
+import { findUserOrFail } from './helpers.js'
 
 export const getUserBalance = async userId => {
   const user = findUserOrFail(userId)
