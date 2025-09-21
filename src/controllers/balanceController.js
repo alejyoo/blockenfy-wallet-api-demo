@@ -1,3 +1,4 @@
+import { SUCC_MESSAGE } from '../constants/index.js'
 import { asyncHandler } from '../middleware/errorHandler.js'
 import { getUserBalance, rechargeBalance } from '../services/balanceService.js'
 import {
@@ -12,6 +13,7 @@ export const getBalance = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
+    message: SUCC_MESSAGE.GET_BALANCE,
     data: balanceData
   })
 })
@@ -24,7 +26,7 @@ export const recharge = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Recharge completed succes',
+    message: SUCC_MESSAGE.RECHARGE,
     data: rechargeData
   })
 })

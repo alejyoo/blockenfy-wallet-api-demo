@@ -1,3 +1,4 @@
+import { SUCC_MESSAGE } from '../constants/index.js'
 import { asyncHandler } from '../middleware/errorHandler.js'
 import {
   createUser as createUserService,
@@ -9,7 +10,7 @@ export const createUser = asyncHandler(async (_req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'User created successfully',
+    message: SUCC_MESSAGE.CREATE_USER,
     data: userData
   })
 })
@@ -19,7 +20,7 @@ export const listUsers = asyncHandler(async (_req, res) => {
 
   res.json({
     succes: true,
-    message: `list of ${users.length} users`,
+    message: SUCC_MESSAGE.LIST_USERS,
     data: users
   })
 })

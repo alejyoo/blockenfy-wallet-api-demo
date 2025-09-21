@@ -1,3 +1,4 @@
+import { SUCC_MESSAGE } from '../constants/index.js'
 import { asyncHandler } from '../middleware/errorHandler.js'
 import { getUserHistory } from '../services/historyService.js'
 import { validateUserId } from '../validators/walletValidator.js'
@@ -9,7 +10,7 @@ export const getHistory = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    message: 'History retrieved successfully',
+    message: SUCC_MESSAGE.GET_HISTORY,
     data: historyData
   })
 })

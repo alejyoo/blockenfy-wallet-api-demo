@@ -1,3 +1,4 @@
+import { SUCC_MESSAGE } from '../constants/index.js'
 import { asyncHandler } from '../middleware/errorHandler.js'
 import { transferMoney } from '../services/transactionService.js'
 import {
@@ -14,7 +15,7 @@ export const transfer = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Transfer completed successfully',
+    message: SUCC_MESSAGE.TRANSACTION,
     data: transferData
   })
 })

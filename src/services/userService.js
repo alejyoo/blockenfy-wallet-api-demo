@@ -1,8 +1,9 @@
+import { DEFAULTS } from '../constants/index.js'
 import { prisma } from '../database/connection.js'
 
 export const createUser = async () => {
   const user = await prisma.user.create({
-    data: { balance: 0, currency: 'USD' }
+    data: { balance: DEFAULTS.INITIAL_BALANCE, currency: DEFAULTS.CURRENCY }
   })
 
   return {

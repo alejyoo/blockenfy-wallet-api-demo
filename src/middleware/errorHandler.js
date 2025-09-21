@@ -1,3 +1,5 @@
+import { ERR_MESSAGE } from '../constants/index.js'
+
 export class AppError extends Error {
   constructor(message, statusCode = 500) {
     super(message)
@@ -5,10 +7,11 @@ export class AppError extends Error {
     this.isOperational = true
   }
 }
+
 export const errorHandler = (err, _req, res, _next) => {
   if (!err.isOperational) {
-    console.error('Unexpected error: ', err)
-    err = new AppError('Internal error', 500)
+    console.error(ERR_MESSAGE.UNEXPECTED_ERROR, err)
+    err = new AppError(ERR_MESSAGE.INTERNAL_ERROR, 500)
   }
 
   res.status(err.statusCode).json({
@@ -19,7 +22,7 @@ export const errorHandler = (err, _req, res, _next) => {
 
 export const notFound = (req, _res, next) => {
   const error = new AppError(
-    `${req.originalUrl} route unavailable or nonexistent`,
+    `${req.originalUrl} ${ERR_MESSAGE.ROUTE_NOT_FOUND}`,
     404
   )
   next(error)

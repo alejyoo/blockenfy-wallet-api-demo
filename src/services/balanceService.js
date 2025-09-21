@@ -1,3 +1,4 @@
+import { ERR_MESSAGE } from '../constants/index.js'
 import { prisma } from '../database/connection.js'
 import { AppError } from '../middleware/errorHandler.js'
 
@@ -5,7 +6,7 @@ export const getUserBalance = async userId => {
   await new Promise(resolve => setTimeout(resolve, 100))
 
   const user = await prisma.user.findUnique({ where: { id: userId } })
-  if (!user) throw new AppError('User not found', 404)
+  if (!user) throw new AppError(ERR_MESSAGE.UNEXPECTED_ERROR, 404)
 
   return {
     userId: user.id,
@@ -18,7 +19,7 @@ export const rechargeBalance = async (userId, amount) => {
   const user = await prisma.user.findUnique({ where: { id: userId } })
 
   if (!user) {
-    throw new AppError('User not found', 404)
+    throw new AppError(ERR_MESSAGE.USER_NOT_FOUND, 404)
   }
 
   const updateUser = await prisma.user.update({

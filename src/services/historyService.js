@@ -1,8 +1,9 @@
+import { DESCRIPTION_TYPES, ERR_MESSAGE, TYPES } from '../constants/index.js'
 import { prisma } from '../database/connection.js'
 
 export const getUserHistory = async userId => {
   const user = await prisma.user.findUnique({ where: { id: userId } })
-  if (!user) throw new AppError('User not found', 404)
+  if (!user) throw new AppError(ERR_MESSAGE.USER_NOT_FOUND, 404)
 
   const [recharges, sentTransactions, receivedTransactions] = await Promise.all(
     [
@@ -44,8 +45,8 @@ export const getUserHistory = async userId => {
       formatTransaction({
         id: r.id,
         amount: r.amount,
-        type: 'recharge',
-        description: 'Money recharge',
+        type: TYPES.RECHARGE,
+        description: DESCRIPTION_TYPES.RECHARGE,
         timestamp: r.createdAt
       })
     ),
@@ -53,8 +54,8 @@ export const getUserHistory = async userId => {
       formatTransaction({
         id: t.id,
         amount: -t.amount,
-        type: 'transfer_sent',
-        description: `Transfer sent to user ${t.toUserId}`,
+        type: TYPES.TRANSFER.SENT,
+        description: `${DESCRIPTION_TYPES.TRANSFER.SENT} ${t.toUserId}`,
         relatedUserId: t.toUserId,
         timestamp: t.createdAt
       })
@@ -63,8 +64,8 @@ export const getUserHistory = async userId => {
       formatTransaction({
         id: t.id,
         amount: t.amount,
-        type: 'transfer_received',
-        description: `Transfer received from user ${t.fromUserId}`,
+        type: TYPES.TRANSFER.RECEIVED,
+        description: `${DESCRIPTION_TYPES.TRANSFER.RECEIVED} ${t.fromUserId}`,
         relatedUserId: t.fromUserId,
         timestamp: t.createdAt
       })
