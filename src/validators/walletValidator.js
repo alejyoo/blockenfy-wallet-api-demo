@@ -1,5 +1,5 @@
-import { ERR_MESSAGE } from '../constants/index.js'
-import { AppError } from '../middleware/errorHandler.js'
+import { ERR_MESSAGE } from '#constants/index.js'
+import { AppError } from '#middleware/errorHandler.js'
 
 export const validateUserId = userId => {
   if (!userId) {

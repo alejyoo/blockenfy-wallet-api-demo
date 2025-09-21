@@ -1,4 +1,4 @@
-import { prisma } from '../src/database/connection.js'
+import { prisma } from '#src/database/connection.js'
 
 const clearDatabase = async () => {
   try {

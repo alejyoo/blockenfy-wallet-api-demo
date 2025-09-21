@@ -1,4 +1,4 @@
-import { ERR_MESSAGE } from '../constants/index.js'
+import { ERR_MESSAGE } from '#constants/index.js'
 
 export class AppError extends Error {
   constructor(message, statusCode = 500) {

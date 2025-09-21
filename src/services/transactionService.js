@@ -1,4 +1,4 @@
-import { prisma } from '../database/connection.js'
+import { prisma } from '#database/connection.js'
 
 export const transferMoney = async (fromUserId, toUserId, amount) => {
   return await prisma.$transaction(async tx => {

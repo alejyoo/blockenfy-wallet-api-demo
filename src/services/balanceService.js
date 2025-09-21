@@ -1,6 +1,6 @@
-import { ERR_MESSAGE } from '../constants/index.js'
-import { prisma } from '../database/connection.js'
-import { AppError } from '../middleware/errorHandler.js'
+import { ERR_MESSAGE } from '#constants/index.js'
+import { prisma } from '#database/connection.js'
+import { AppError } from '#middleware/errorHandler.js'
 
 export const getUserBalance = async userId => {
   await new Promise(resolve => setTimeout(resolve, 100))

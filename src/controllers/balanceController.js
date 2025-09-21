@@ -1,10 +1,7 @@
-import { SUCC_MESSAGE } from '../constants/index.js'
-import { asyncHandler } from '../middleware/errorHandler.js'
-import { getUserBalance, rechargeBalance } from '../services/balanceService.js'
-import {
-  validateAmount,
-  validateUserId
-} from '../validators/walletValidator.js'
+import { SUCC_MESSAGE } from '#constants/index.js'
+import { asyncHandler } from '#middleware/errorHandler.js'
+import { getUserBalance, rechargeBalance } from '#services/balanceService.js'
+import { validateAmount, validateUserId } from '#validators/walletValidator.js'
 
 export const getBalance = asyncHandler(async (req, res) => {
   const userId = validateUserId(req.params.userId)

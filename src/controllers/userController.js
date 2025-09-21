@@ -1,9 +1,9 @@
-import { SUCC_MESSAGE } from '../constants/index.js'
-import { asyncHandler } from '../middleware/errorHandler.js'
+import { SUCC_MESSAGE } from '#constants/index.js'
+import { asyncHandler } from '#middleware/errorHandler.js'
 import {
   createUser as createUserService,
   listUsers as listUsersService
-} from '../services/userService.js'
+} from '#services/userService.js'
 
 export const createUser = asyncHandler(async (_req, res) => {
   const userData = await createUserService()

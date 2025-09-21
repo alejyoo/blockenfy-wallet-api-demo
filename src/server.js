@@ -2,10 +2,10 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import { connectDatabase } from '#database/connection.js'
+import { errorHandler, notFound } from '#middleware/errorHandler.js'
+import walletRoutes from '#routes/walletRoutes.js'
 import config from './config.js'
-import { connectDatabase } from './database/connection.js'
-import { errorHandler, notFound } from './middleware/errorHandler.js'
-import walletRoutes from './routes/walletRoutes.js'
 
 const app = express()
 

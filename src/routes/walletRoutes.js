@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { getBalance, recharge } from '../controllers/balanceController.js'
-import { getHistory } from '../controllers/historyController.js'
-import { transfer } from '../controllers/transactionController.js'
-import { createUser, listUsers } from '../controllers/userController.js'
+import { getBalance, recharge } from '#controllers/balanceController.js'
+import { getHistory } from '#controllers/historyController.js'
+import { transfer } from '#controllers/transactionController.js'
+import { createUser, listUsers } from '#controllers/userController.js'
 
 const router = Router()
 

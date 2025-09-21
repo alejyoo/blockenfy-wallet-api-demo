@@ -1,5 +1,5 @@
-import { DESCRIPTION_TYPES, ERR_MESSAGE, TYPES } from '../constants/index.js'
-import { prisma } from '../database/connection.js'
+import { DESCRIPTION_TYPES, ERR_MESSAGE, TYPES } from '#constants/index.js'
+import { prisma } from '#database/connection.js'
 
 export const getUserHistory = async userId => {
   const user = await prisma.user.findUnique({ where: { id: userId } })

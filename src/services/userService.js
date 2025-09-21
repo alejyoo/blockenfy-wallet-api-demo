@@ -1,5 +1,5 @@
-import { DEFAULTS } from '../constants/index.js'
-import { prisma } from '../database/connection.js'
+import { DEFAULTS } from '#constants/index.js'
+import { prisma } from '#database/connection.js'
 
 export const createUser = async () => {
   const user = await prisma.user.create({
