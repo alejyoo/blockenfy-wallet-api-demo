@@ -1,33 +1,46 @@
 import { prisma } from '#database/connection.js'
+import {
+  validateSufficientBalance,
+  validateTransferAmount
+} from '#validators/walletValidator.js'
 import { findUserOrFail } from './helpers.js'
 
-export const transferMoney = async (fromUserId, toUserId, amount) => {
-  findUserOrFail(fromUserId)
-  findUserOrFail(toUserId)
+export const transferMoney = async (senderId, receiverId, amount) => {
+  const validatedAmount = validateTransferAmount(amount)
 
-  return await prisma.$transaction(async tx => {
-    const updatedSender = await tx.user.update({
-      where: { id: fromUserId },
-      data: { balance: { decrement: amount } }
-    })
+  const sender = await findUserOrFail(senderId)
+  await findUserOrFail(receiverId)
 
-    const updatedReceiver = await tx.user.update({
-      where: { id: toUserId },
-      data: { balance: { increment: amount } }
-    })
+  validateSufficientBalance(sender.balance, validatedAmount)
 
-    const transaction = await tx.transaction.create({
-      data: { fromUserId, toUserId, amount }
-    })
+  return prisma.$transaction(async tx => {
+    const [updatedSender, updatedReceiver, transactionRecord] =
+      await Promise.all([
+        tx.user.update({
+          where: { id: senderId },
+          data: { balance: { decrement: validatedAmount } }
+        }),
+        tx.user.update({
+          where: { id: receiverId },
+          data: { balance: { increment: validatedAmount } }
+        }),
+        tx.transaction.create({
+          data: {
+            fromUserId: senderId,
+            toUserId: receiverId,
+            amount: validatedAmount
+          }
+        })
+      ])
 
     return {
-      transactionId: transaction.id,
-      fromUserId,
-      toUserId,
-      amount: Number(amount),
+      transactionId: transactionRecord.id,
+      fromUserId: senderId,
+      toUserId: receiverId,
+      amount: validatedAmount,
       senderNewBalance: Number(updatedSender.balance),
       receiverNewBalance: Number(updatedReceiver.balance),
-      timestamp: transaction.createdAt
+      timestamp: transactionRecord.createdAt
     }
   })
 }

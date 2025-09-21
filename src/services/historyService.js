@@ -1,8 +1,35 @@
 import { DESCRIPTION_TYPES, TYPES } from '#constants/index.js'
 import { prisma } from '#database/connection.js'
+import { findUserOrFail } from './helpers.js'
+
+const mapRechargeToHistory = recharge => ({
+  id: recharge.id,
+  type: TYPES.RECHARGE,
+  amount: Number(recharge.amount),
+  description: DESCRIPTION_TYPES.RECHARGE,
+  timestamp: recharge.createdAt
+})
+
+const mapSentTransactionToHistory = tx => ({
+  id: tx.id,
+  type: TYPES.TRANSFER.SENT,
+  amount: -Number(tx.amount),
+  description: `${DESCRIPTION_TYPES.TRANSFER.SENT} ${tx.toUserId}`,
+  relatedUserId: tx.toUserId,
+  timestamp: tx.createdAt
+})
+
+const mapReceivedTransactionToHistory = tx => ({
+  id: tx.id,
+  type: TYPES.TRANSFER.RECEIVED,
+  amount: Number(tx.amount),
+  description: `${DESCRIPTION_TYPES.TRANSFER.RECEIVED} ${tx.fromUserId}`,
+  relatedUserId: tx.fromUserId,
+  timestamp: tx.createdAt
+})
 
 export const getUserHistory = async userId => {
-  const user = findUserOrFail(userId)
+  const user = await findUserOrFail(userId)
 
   const [recharges, sentTransactions, receivedTransactions] = await Promise.all(
     [
@@ -23,57 +50,15 @@ export const getUserHistory = async userId => {
     ]
   )
 
-  const formatTransaction = ({
-    id,
-    amount,
-    type,
-    description,
-    relatedUserId,
-    timestamp
-  }) => ({
-    id,
-    type,
-    amount: parseFloat(amount),
-    description,
-    relatedUserId,
-    timestamp
-  })
-
   const history = [
-    ...recharges.map(r =>
-      formatTransaction({
-        id: r.id,
-        amount: r.amount,
-        type: TYPES.RECHARGE,
-        description: DESCRIPTION_TYPES.RECHARGE,
-        timestamp: r.createdAt
-      })
-    ),
-    ...sentTransactions.map(t =>
-      formatTransaction({
-        id: t.id,
-        amount: -t.amount,
-        type: TYPES.TRANSFER.SENT,
-        description: `${DESCRIPTION_TYPES.TRANSFER.SENT} ${t.toUserId}`,
-        relatedUserId: t.toUserId,
-        timestamp: t.createdAt
-      })
-    ),
-    ...receivedTransactions.map(t =>
-      formatTransaction({
-        id: t.id,
-        amount: t.amount,
-        type: TYPES.TRANSFER.RECEIVED,
-        description: `${DESCRIPTION_TYPES.TRANSFER.RECEIVED} ${t.fromUserId}`,
-        relatedUserId: t.fromUserId,
-        timestamp: t.createdAt
-      })
-    )
-  ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+    ...recharges.map(mapRechargeToHistory),
+    ...sentTransactions.map(mapSentTransactionToHistory),
+    ...receivedTransactions.map(mapReceivedTransactionToHistory)
+  ].sort((a, b) => b.timestamp - a.timestamp)
 
   return {
     userId,
-    currentBalance: parseFloat(user.balance),
+    currentBalance: Number(user.balance),
     totalMovements: history.length,
     history
   }
