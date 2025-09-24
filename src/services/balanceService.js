@@ -8,16 +8,18 @@ export const getUserBalance = async userId => {
 
   return {
     userId: user.id,
+    customId: user.customId,
+    displayName: user.displayName,
     balance: parseFloat(user.balance),
     currency: user.currency
   }
 }
 
 export const rechargeBalance = async (userId, amount) => {
-  const user = findUserOrFail(userId)
+  const user = await findUserOrFail(userId)
 
   const updateUser = await prisma.user.update({
-    where: { id: userId },
+    where: { id: user.id },
     data: {
       balance: {
         increment: amount
@@ -26,11 +28,13 @@ export const rechargeBalance = async (userId, amount) => {
   })
 
   const recharge = await prisma.recharge.create({
-    data: { userId: userId, amount: amount }
+    data: { userId: user.id, amount: amount }
   })
 
   return {
     userId: user.id,
+    customId: user.customId,
+    displayName: user.displayName,
     amountRecharge: parseFloat(recharge.amount),
     newBalance: parseFloat(updateUser.balance),
     transactionId: recharge.id,

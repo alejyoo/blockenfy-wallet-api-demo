@@ -1,9 +1,13 @@
 import { DEFAULTS } from '#constants/index.js'
 import { prisma } from '#database/connection.js'
 
-export const createUser = async () => {
+export const createUser = async displayName => {
   const user = await prisma.user.create({
-    data: { balance: DEFAULTS.INITIAL_BALANCE, currency: DEFAULTS.CURRENCY }
+    data: {
+      displayName,
+      balance: DEFAULTS.INITIAL_BALANCE,
+      currency: DEFAULTS.CURRENCY
+    }
   })
 
   return {
@@ -23,6 +27,8 @@ export const listUsers = async () => {
 
   return users.map(user => ({
     userId: user.id,
+    customId: user.customId,
+    displayName: user.displayName,
     balance: parseFloat(user.balance),
     currency: user.currency,
     createdAt: user.createdAt

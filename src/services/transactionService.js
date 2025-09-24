@@ -17,11 +17,11 @@ export const transferMoney = async (senderId, receiverId, amount) => {
     const [updatedSender, updatedReceiver, transactionRecord] =
       await Promise.all([
         tx.user.update({
-          where: { id: senderId },
+          where: { OR: [{ id: senderId }, { customId: senderId }] },
           data: { balance: { decrement: validatedAmount } }
         }),
         tx.user.update({
-          where: { id: receiverId },
+          where: { OR: [{ id: receiverId }, { customId: receiverId }] },
           data: { balance: { increment: validatedAmount } }
         }),
         tx.transaction.create({

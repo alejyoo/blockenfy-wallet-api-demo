@@ -1,0 +1,7 @@
+PUT http://localhost:3000/api/v1/wallet/profile/cmfvtal9z0000faur98zjo71a
+Content-Type: application/json
+
+{
+  "displayName": "",
+  "customId": ""
+}
